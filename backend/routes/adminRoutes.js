@@ -6,6 +6,8 @@ const StudentProfile = require('../models/Student');
 const Settings = require('../models/Settings');
 const Feedback = require('../models/Feedback');
 
+const SUPER_ADMIN_EMAIL = 'admin123@gmail.com';
+
 // @desc    Get all users (Admin only)
 // @route   GET /api/admin/users
 // @access  Private (Admin)
@@ -36,6 +38,11 @@ router.put('/user/:id', protect, authorize('admin'), async (req, res) => {
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ message: 'User not found' });
 
+        // Protect Super Admin from being modified by others
+        if (user.email === SUPER_ADMIN_EMAIL && req.user.email !== SUPER_ADMIN_EMAIL) {
+            return res.status(403).json({ message: 'Cannot modify Super Admin account' });
+        }
+
         user.name = name || user.name;
         user.email = email || user.email;
         user.role = role || user.role;
@@ -62,6 +69,11 @@ router.delete('/user/:id', protect, authorize('admin'), async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ message: 'User not found' });
+
+        // Protect Super Admin from being deleted
+        if (user.email === SUPER_ADMIN_EMAIL) {
+            return res.status(403).json({ message: 'Super Admin account cannot be deleted' });
+        }
 
         if (user.role === 'student') {
             await StudentProfile.findOneAndDelete({ user: user._id });

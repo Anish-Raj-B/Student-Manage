@@ -84,7 +84,6 @@ const Signup = () => {
                         <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value })}>
                             <option value="student">Student</option>
                             <option value="instructor">Instructor</option>
-                            <option value="admin">Admin</option>
                         </select>
                     </div>
                     <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={!isPasswordValid}>Register</button>

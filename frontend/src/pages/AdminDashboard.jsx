@@ -279,18 +279,24 @@ const AdminDashboard = () => {
                                                     </span>
                                                 </td>
                                                 <td style={{ padding: '1rem 0.5rem', display: 'flex', gap: '0.5rem' }}>
-                                                    <button onClick={() => {
-                                                        setSelectedUser(u);
-                                                        setEditName(u.name);
-                                                        setEditEmail(u.email);
-                                                        setEditRole(u.role);
-                                                        setEditRollNumber(u.rollNumber || '');
-                                                    }} className="btn" style={{ padding: '0.4rem', background: '#3b82f6', color: 'white' }}>
-                                                        <Edit size={16} />
-                                                    </button>
-                                                    <button onClick={() => handleDelete(u._id)} className="btn" style={{ padding: '0.4rem', background: '#fee2e2', color: '#ef4444' }}>
-                                                        <Trash size={16} />
-                                                    </button>
+                                                    {u.email !== 'admin123@gmail.com' ? (
+                                                        <>
+                                                            <button onClick={() => {
+                                                                setSelectedUser(u);
+                                                                setEditName(u.name);
+                                                                setEditEmail(u.email);
+                                                                setEditRole(u.role);
+                                                                setEditRollNumber(u.rollNumber || '');
+                                                            }} className="btn" style={{ padding: '0.4rem', background: '#3b82f6', color: 'white' }}>
+                                                                <Edit size={16} />
+                                                            </button>
+                                                            <button onClick={() => handleDelete(u._id)} className="btn" style={{ padding: '0.4rem', background: '#fee2e2', color: '#ef4444' }}>
+                                                                <Trash size={16} />
+                                                            </button>
+                                                        </>
+                                                    ) : (
+                                                        <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontStyle: 'italic' }}>Restricted (Super Admin)</span>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
