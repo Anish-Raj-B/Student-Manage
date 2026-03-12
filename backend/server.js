@@ -5,6 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const seedAdmin = require('./utils/seedAdmin');
 
 dotenv.config();
 
@@ -22,7 +23,10 @@ app.use('/api/announcements', require('./routes/announcementRoutes'));
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('MongoDB Connected Successfully'))
+    .then(() => {
+        console.log('MongoDB Connected Successfully');
+        seedAdmin();
+    })
     .catch(err => {
         console.error('MongoDB Connection Error Details:');
         console.error(err);

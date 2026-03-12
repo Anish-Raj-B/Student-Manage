@@ -19,6 +19,11 @@ router.post('/register', async (req, res) => {
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ message: 'User already exists' });
 
+        // Prevent admin registration
+        if (role === 'admin') {
+            return res.status(403).json({ message: 'Admin registration is not allowed' });
+        }
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
